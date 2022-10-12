@@ -6,7 +6,7 @@ import { fetcher } from '../../utils/fetcher';
 
 const ProductPage = () => {
   const { query } = useRouter();
-  const { data: product, isLoading } = useQuery(['products', query.id], () =>
+  const { data: product, isLoading } = useQuery(['product', query.id], () =>
     fetcher<ProductAPIResponse>(`/products/${query.id}`)
   );
 

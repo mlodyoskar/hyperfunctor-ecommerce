@@ -2,28 +2,46 @@ import { useQuery } from '@tanstack/react-query';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { ProductAPIResponse, ProductList } from '../components/ProductList';
-import { fetcher } from '../utils/fetcher';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Pagination } from '../components/Pagination';
 
 const Home = () => {
-  const { data, isLoading } = useQuery(['products'], () =>
-    fetcher<ProductAPIResponse[]>('/products')
-  );
-
-  if (!data || isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <section className="bg-gray-50 flex flex-col max-w-7xl mx-auto">
-      <div className="mb-4">
-        <span className="inline-block h-1 w-12 bg-red-700"></span>
+      <section className="bg-gray-50">
+        <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+          <div className="mx-auto max-w-xl text-center">
+            <h1 className="text-3xl font-extrabold sm:text-5xl">
+              Understand User Flow.
+              <strong className="font-extrabold text-red-700 sm:block">
+                Increase Conversion.
+              </strong>
+            </h1>
 
-        <h2 className="mt-1 text-2xl font-extrabold uppercase tracking-wide lg:text-3xl">
-          All products
-        </h2>
-      </div>
-      <ProductList products={data} />
+            <p className="mt-4 sm:text-xl sm:leading-relaxed">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt
+              illo tenetur fuga ducimus numquam ea!
+            </p>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Link href="/products">
+                <a className="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto">
+                  See our products
+                </a>
+              </Link>
+              <Link href="/products">
+                <a
+                  className="block w-full rounded px-12 py-3 text-sm font-medium text-red-600 shadow hover:text-red-700 focus:outline-none focus:ring active:text-red-500 sm:w-auto"
+                  href="/about"
+                >
+                  Learn More
+                </a>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </section>
   );
 };
