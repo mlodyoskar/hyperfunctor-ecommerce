@@ -14,8 +14,6 @@ const ProductsPage = () => {
     getProducts(1, PRODUCTS_PER_PAGE)
   );
 
-  console.log(query);
-
   if (!data || isLoading) {
     return <div>Loading...</div>;
   }
