@@ -1,17 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { Pagination } from '../components/Pagination';
-import { ProductAPIResponse, ProductList } from '../components/ProductList';
-import { getProducts } from '../utils/getProducts';
+import { Pagination } from '../../components/Pagination';
+import { ProductList } from '../../components/ProductList';
+import { getProducts } from '../../utils/getProducts';
 
 const PRODUCTS_PER_PAGE = 25;
 
 const ProductsPage = () => {
-  const { query } = useRouter();
-  const [page, setPage] = useState(query.page || 1);
+  const router = useRouter();
+  const { page } = router.query;
+
+  if (typeof page !== 'string') {
+    throw new Error('Invalid page');
+  }
+
   const { data, isLoading } = useQuery(['products', page], () =>
-    getProducts(1, PRODUCTS_PER_PAGE)
+    getProducts(page, PRODUCTS_PER_PAGE)
   );
 
   if (!data || isLoading) {

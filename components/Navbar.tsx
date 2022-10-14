@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const navigationLinks = [
   {
@@ -7,7 +9,11 @@ const navigationLinks = [
   },
   {
     text: 'products',
-    to: '/',
+    to: '/products',
+  },
+  {
+    text: 'products-csr',
+    to: '/products-csr',
   },
   {
     text: 'contact',
@@ -16,6 +22,8 @@ const navigationLinks = [
 ] as const;
 
 export const Navbar = () => {
+  const { pathname } = useRouter();
+
   return (
     <header className="border-b border-gray-100">
       <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between sm:px-6 lg:px-8">
@@ -50,7 +58,12 @@ export const Navbar = () => {
             {navigationLinks.map(({ text, to }) => {
               return (
                 <Link key={text} href={to}>
-                  <a className="block h-16 border-b-4 border-transparent leading-[4rem] hover:border-current hover:text-red-700">
+                  <a
+                    className={`${clsx(
+                      { 'text-red-700 border-current': pathname === to },
+                      'block h-16 border-b-4 border-transparent leading-[4rem] hover:border-current hover:text-red-700'
+                    )}`}
+                  >
                     {text}
                   </a>
                 </Link>

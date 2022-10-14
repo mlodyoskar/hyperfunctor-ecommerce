@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from 'next/image';
 import Link from 'next/link';
 
 export interface ProductAPIResponse {
@@ -33,11 +33,17 @@ export const ProductList = ({
                   New
                 </strong>
               </div>
-              <img
-                alt={product.title}
-                src={product.image}
-                className="-mt-3 h-[350px] w-full object-cover sm:h-[450px]"
-              />
+              <div className="bg-white">
+                <Image
+                  alt={product.title}
+                  src={product.image}
+                  className="-mt-3 h-[350px] w-full object-cover sm:h-[450px]"
+                  layout="responsive"
+                  width={4}
+                  height={3}
+                  objectFit="contain"
+                />
+              </div>
               <h5 className="mt-4 text-sm text-gray-700">{product.title}</h5>
               <div className="mt-4 flex items-center justify-between font-medium">
                 <p>${product.price}</p>
