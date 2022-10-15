@@ -7,7 +7,7 @@ const ProductsPage = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <section className="bg-gray-50 flex flex-col max-w-7xl mx-auto">
+    <section className="mx-auto flex max-w-7xl flex-col bg-gray-50">
       <div className="mb-4">
         <span className="inline-block h-1 w-12 bg-red-700"></span>
 
@@ -16,7 +16,7 @@ const ProductsPage = ({
         </h2>
       </div>
       <ProductList products={data} />
-      <Pagination />
+      <Pagination page={1} />
     </section>
   );
 };
