@@ -26,7 +26,7 @@ export const ProductList = ({
     <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-2">
       {products.map((product) => {
         return (
-          <Link href={`products/${product.id}`} key={product.id}>
+          <Link href={`products-csr/${product.id}`} key={product.id}>
             <a className="block">
               <div className="flex justify-center">
                 <strong className="relative h-6 bg-black px-4 text-xs uppercase leading-6 text-white">

@@ -7,10 +7,10 @@ const navigationLinks = [
     text: 'about',
     to: '/about',
   },
-  {
-    text: 'products',
-    to: '/products',
-  },
+  // {
+  //   text: 'products',
+  //   to: '/products',
+  // },
   {
     text: 'products-csr',
     to: '/products-csr',
