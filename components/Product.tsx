@@ -1,12 +1,16 @@
 import { ProductAPIResponse } from './ProductList';
+import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type ProductType = Omit<
   ProductAPIResponse,
   'id' | 'rating' | 'category' | 'description'
 >;
 
-type Props = { product: ProductType };
+type Props = {
+  product: ProductType;
+};
 
 export const Product = ({ product }: Props) => {
   return (
@@ -26,10 +30,8 @@ export const Product = ({ product }: Props) => {
               alt={product.title}
               src={product.image}
               className="h-72 w-full rounded-xl object-cover lg:h-[540px]"
-              layout="responsive"
-              width={4}
-              height={3}
-              objectFit="contain"
+              width={400}
+              height={300}
             />
 
             <div className="absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full bg-black/75 px-3 py-1.5 text-white">
@@ -179,7 +181,16 @@ export const Product = ({ product }: Props) => {
 
         <div className="lg:col-span-3">
           <div className="prose max-w-none [&>iframe]:mt-6 [&>iframe]:aspect-video [&>iframe]:w-full [&>iframe]:rounded-xl">
-            {product.longDescription}
+            <ReactMarkdown
+              components={{
+                a: ({ href, ...props }) => (
+                  <Link href={href || ''}>{props.children[0]}</Link>
+                ),
+              }}
+            >
+              {`[link do produktu](/products/2)`}
+              {/* {product.longDescription} */}
+            </ReactMarkdown>
           </div>
         </div>
       </div>

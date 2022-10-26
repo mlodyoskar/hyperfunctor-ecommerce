@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Home = () => {
   return (
-    <section className="bg-gray-50 flex flex-col max-w-7xl mx-auto">
+    <section className="mx-auto flex max-w-7xl flex-col bg-gray-50">
       <section className="bg-gray-50">
         <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
           <div className="mx-auto max-w-xl text-center">
@@ -19,18 +19,17 @@ const Home = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Link href="/products">
-                <a className="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto">
-                  See our products
-                </a>
+              <Link
+                className="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
+                href="/products"
+              >
+                See our products
               </Link>
-              <Link href="/products">
-                <a
-                  className="block w-full rounded px-12 py-3 text-sm font-medium text-red-600 shadow hover:text-red-700 focus:outline-none focus:ring active:text-red-500 sm:w-auto"
-                  href="/about"
-                >
-                  Learn More
-                </a>
+              <Link
+                href="/products"
+                className="block w-full rounded px-12 py-3 text-sm font-medium text-red-600 shadow hover:text-red-700 focus:outline-none focus:ring active:text-red-500 sm:w-auto"
+              >
+                Learn More
               </Link>
             </div>
           </div>

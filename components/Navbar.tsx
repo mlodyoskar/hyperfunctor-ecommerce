@@ -7,13 +7,9 @@ const navigationLinks = [
     text: 'about',
     to: '/about',
   },
-  // {
-  //   text: 'products',
-  //   to: '/products',
-  // },
   {
-    text: 'products-csr',
-    to: '/products-csr',
+    text: 'products',
+    to: '/products',
   },
   {
     text: 'contact',
@@ -44,12 +40,10 @@ export const Navbar = () => {
               />
             </svg>
           </button>
-          <Link href="/">
-            <a className="flex items-center justify-center">
-              <span className="inline-block font-bold text-red-700">
-                Hyperfunctor
-              </span>
-            </a>
+          <Link className="flex items-center justify-center" href="/">
+            <span className="inline-block font-bold text-red-700">
+              Hyperfunctor
+            </span>
           </Link>
         </div>
 
@@ -57,15 +51,15 @@ export const Navbar = () => {
           <nav className="hidden lg:flex lg:gap-4 lg:text-xs lg:font-bold lg:uppercase lg:tracking-wide lg:text-gray-500">
             {navigationLinks.map(({ text, to }) => {
               return (
-                <Link key={text} href={to}>
-                  <a
-                    className={`${clsx(
-                      { 'text-red-700 border-current': pathname === to },
-                      'block h-16 border-b-4 border-transparent leading-[4rem] hover:border-current hover:text-red-700'
-                    )}`}
-                  >
-                    {text}
-                  </a>
+                <Link
+                  key={text}
+                  href={to}
+                  className={`${clsx(
+                    { 'border-current text-red-700': pathname === to },
+                    'block h-16 border-b-4 border-transparent leading-[4rem] hover:border-current hover:text-red-700'
+                  )}`}
+                >
+                  {text}
                 </Link>
               );
             })}
