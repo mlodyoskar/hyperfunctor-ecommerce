@@ -1,12 +1,16 @@
 import { ProductAPIResponse } from './ProductList';
 import Image from 'next/image';
+import { Markdown } from './Markdown';
+import { MarkdownContent } from '../types';
 
 type ProductType = Omit<
   ProductAPIResponse,
-  'id' | 'rating' | 'category' | 'description'
+  'longDescription' | 'id' | 'rating' | 'category' | 'description'
 >;
 
-type Props = { product: ProductType };
+type Props = {
+  product: ProductType & { longDescription: MarkdownContent };
+};
 
 export const Product = ({ product }: Props) => {
   return (
@@ -25,11 +29,9 @@ export const Product = ({ product }: Props) => {
             <Image
               alt={product.title}
               src={product.image}
-              className="h-72 w-full rounded-xl object-cover lg:h-[540px]"
-              layout="responsive"
-              width={4}
-              height={3}
-              objectFit="contain"
+              className="h-72 w-full rounded-xl object-contain lg:h-[540px]"
+              width={300}
+              height={300}
             />
 
             <div className="absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full bg-black/75 px-3 py-1.5 text-white">
@@ -179,7 +181,7 @@ export const Product = ({ product }: Props) => {
 
         <div className="lg:col-span-3">
           <div className="prose max-w-none [&>iframe]:mt-6 [&>iframe]:aspect-video [&>iframe]:w-full [&>iframe]:rounded-xl">
-            {product.longDescription}
+            <Markdown content={product.longDescription} />
           </div>
         </div>
       </div>
