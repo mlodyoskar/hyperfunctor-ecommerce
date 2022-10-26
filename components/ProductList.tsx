@@ -1,4 +1,3 @@
-import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,10 +9,7 @@ export interface ProductAPIResponse {
   category: string;
   rating: Rating;
   image: string;
-  longDescription: MDXRemoteSerializeResult<
-    Record<string, unknown>,
-    Record<string, string>
-  >;
+  longDescription: string;
 }
 
 interface Rating {

@@ -1,16 +1,15 @@
 import { ProductAPIResponse } from './ProductList';
 import Image from 'next/image';
-import { MDXRemote } from 'next-mdx-remote';
-import Link from 'next/link';
 import { Markdown } from './Markdown';
+import { MarkdownContent } from '../types';
 
 type ProductType = Omit<
   ProductAPIResponse,
-  'id' | 'rating' | 'category' | 'description'
+  'longDescription' | 'id' | 'rating' | 'category' | 'description'
 >;
 
 type Props = {
-  product: ProductType;
+  product: ProductType & { longDescription: MarkdownContent };
 };
 
 export const Product = ({ product }: Props) => {
