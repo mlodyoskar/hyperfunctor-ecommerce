@@ -1,7 +1,8 @@
 import { ProductAPIResponse } from './ProductList';
-import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
+import { MDXRemote } from 'next-mdx-remote';
 import Link from 'next/link';
+import { Markdown } from './Markdown';
 
 type ProductType = Omit<
   ProductAPIResponse,
@@ -29,8 +30,8 @@ export const Product = ({ product }: Props) => {
             <Image
               alt={product.title}
               src={product.image}
-              className="h-72 w-full rounded-xl object-cover lg:h-[540px]"
-              width={400}
+              className="h-72 w-full rounded-xl object-contain lg:h-[540px]"
+              width={300}
               height={300}
             />
 
@@ -181,16 +182,7 @@ export const Product = ({ product }: Props) => {
 
         <div className="lg:col-span-3">
           <div className="prose max-w-none [&>iframe]:mt-6 [&>iframe]:aspect-video [&>iframe]:w-full [&>iframe]:rounded-xl">
-            <ReactMarkdown
-              components={{
-                a: ({ href, ...props }) => (
-                  <Link href={href || ''}>{props.children[0]}</Link>
-                ),
-              }}
-            >
-              {`[link do produktu](/products/2)`}
-              {/* {product.longDescription} */}
-            </ReactMarkdown>
+            <Markdown content={product.longDescription} />
           </div>
         </div>
       </div>

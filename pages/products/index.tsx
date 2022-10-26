@@ -1,5 +1,4 @@
 import { InferGetStaticPropsType } from 'next';
-import { Pagination } from '../../components/Pagination';
 import { ProductList } from '../../components/ProductList';
 import { getProducts } from '../../utils/getProducts';
 
@@ -16,7 +15,6 @@ const ProductsPage = ({
         </h2>
       </div>
       <ProductList products={data} />
-      <Pagination page={1} />
     </section>
   );
 };
