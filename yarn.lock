@@ -2351,6 +2351,11 @@ next-mdx-remote@^4.1.0:
     vfile "^5.3.0"
     vfile-matter "^3.0.1"
 
+next-seo@^5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-5.9.0.tgz#1bc68a25677f0459609c587264c5ee90a2a00730"
+  integrity sha512-GsPXIDC9EFoFM6pkigSGMzuD/PelL8TFPlD5rKQCZfwkDNhs0unkW8sOMZ2u4RnEfxb/BBpEjQxtEeYQcgQ8jQ==
+
 next@13.0.0:
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/next/-/next-13.0.0.tgz#6f07064a4f374562cf58677bef4dd06326ca648b"

@@ -9,7 +9,7 @@ const navigationLinks = [
   },
   {
     text: 'products',
-    to: '/products',
+    to: '/products/p/1',
   },
   {
     text: 'contact',

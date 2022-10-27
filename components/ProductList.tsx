@@ -23,24 +23,19 @@ export const ProductList = ({
   products: ProductAPIResponse[];
 }) => {
   return (
-    <div className="grid gap-4 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid gap-x-4 gap-y-8 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => {
         return (
           <Link
-            href={`products/${product.id}`}
+            href={`/products/${product.id}`}
             key={product.id}
             className="block"
           >
-            <div className="flex justify-center">
-              <strong className="relative h-6 bg-black px-4 text-xs uppercase leading-6 text-white">
-                New
-              </strong>
-            </div>
             <div className="bg-white">
               <Image
                 alt={product.title}
                 src={product.image}
-                className="-mt-3 h-[350px] w-full object-cover sm:h-[450px]"
+                className="-mt-3 h-[350px] w-full object-contain sm:h-[450px]"
                 width={400}
                 height={400}
               />
