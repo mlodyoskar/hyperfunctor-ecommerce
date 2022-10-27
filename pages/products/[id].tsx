@@ -5,44 +5,40 @@ import { InferGetStaticPathsType } from '../../types';
 import { fetcher } from '../../utils/fetcher';
 import { serialize } from 'next-mdx-remote/serialize';
 
-const ProductPage = ({
-  product,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return (
-    <section>
-      <Product product={product} />
-    </section>
-  );
+const ProductPage = ({ product }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	return (
+		<section>
+			<Product product={product} />
+		</section>
+	);
 };
 
 export const getStaticProps = async ({
-  params,
+	params,
 }: GetStaticPropsContext<InferGetStaticPathsType<typeof getStaticPaths>>) => {
-  const product = await fetcher<ProductAPIResponse | null>(
-    `/products/${params?.id}`
-  );
+	const product = await fetcher<ProductAPIResponse | null>(`/products/${params?.id}`);
 
-  if (!product) {
-    return {
-      notFound: true,
-    };
-  }
+	if (!product) {
+		return {
+			notFound: true,
+		};
+	}
 
-  return {
-    props: {
-      product: {
-        ...product,
-        longDescription: await serialize(product.longDescription),
-      },
-    },
-  };
+	return {
+		props: {
+			product: {
+				...product,
+				longDescription: await serialize(product.longDescription),
+			},
+		},
+	};
 };
 
 export const getStaticPaths = async () => {
-  return {
-    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
-    fallback: 'blocking',
-  };
+	return {
+		paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+		fallback: 'blocking',
+	};
 };
 
 export default ProductPage;

@@ -7,14 +7,14 @@ import { Layout } from '../components/Layout';
 export const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-  );
+	return (
+		<QueryClientProvider client={queryClient}>
+			<Layout>
+				<Component {...pageProps} />
+			</Layout>
+			<ReactQueryDevtools />
+		</QueryClientProvider>
+	);
 }
 
 export default MyApp;
