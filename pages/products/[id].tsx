@@ -36,7 +36,11 @@ export const getStaticProps = async ({
 
 export const getStaticPaths = async () => {
 	return {
-		paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+		paths: Array.from({ length: 50 }, (_, idx) => ({
+			params: {
+				id: (idx + 1).toString(),
+			},
+		})),
 		fallback: 'blocking',
 	};
 };

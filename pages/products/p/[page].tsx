@@ -38,16 +38,12 @@ export const getStaticProps = async ({
 };
 
 export const getStaticPaths = async () => {
-	const pages = Array.from(Array(10).keys()).map((page) => {
-		return {
-			params: {
-				page: (page + 1).toString(),
-			},
-		};
-	});
-
 	return {
-		paths: pages,
+		paths: Array.from({ length: 2 }, (_, idx) => ({
+			params: {
+				page: (idx + 1).toString(),
+			},
+		})),
 		fallback: 'blocking',
 	};
 };
