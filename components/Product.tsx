@@ -2,14 +2,16 @@ import { ProductAPIResponse } from './ProductList';
 import Image from 'next/image';
 import { Markdown } from './Markdown';
 import { MarkdownContent } from '../types';
+import { useCartStore } from '../context/CartContext';
 
-type ProductType = Omit<ProductAPIResponse, 'longDescription' | 'id' | 'rating' | 'category' | 'description'>;
+type ProductType = Omit<ProductAPIResponse, 'longDescription' | 'rating' | 'category' | 'description'>;
 
 type Props = {
 	product: ProductType & { longDescription: MarkdownContent };
 };
 
 export const Product = ({ product }: Props) => {
+	const { addItemToCart } = useCartStore();
 	return (
 		<div className="relative mx-auto max-w-screen-xl px-4 py-8">
 			<div>
@@ -121,7 +123,10 @@ export const Product = ({ product }: Props) => {
 						</div>
 
 						<button
-							type="submit"
+							onClick={(e) => {
+								e.preventDefault();
+								addItemToCart({ id: product.id, price: product.price, title: product.title });
+							}}
 							className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
 						>
 							Add to cart
