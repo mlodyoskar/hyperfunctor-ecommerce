@@ -55,7 +55,7 @@ const CartPage = () => {
 
 												<div className="flex flex-col">
 													<p className="text-sm">
-														${item.price}
+														${item.price / 100}
 														<small className="text-gray-500"> x {count}</small>
 													</p>
 													<button onClick={() => removeItemFromCart(item.id)} className="self-end text-red-700">

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const Home = () => {
+const HomePage = () => {
 	return (
 		<section className="mx-auto flex max-w-7xl flex-col bg-gray-50">
 			<section className="bg-gray-50">
@@ -10,7 +10,7 @@ const Home = () => {
 							Understand User Flow.
 							<strong className="font-extrabold text-red-700 sm:block">Increase Conversion.</strong>
 						</h1>
-
+						<div></div>
 						<p className="mt-4 sm:text-xl sm:leading-relaxed">
 							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt illo tenetur fuga ducimus numquam ea!
 						</p>
@@ -36,4 +36,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default HomePage;

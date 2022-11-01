@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const LOCAL_STORAGE_CART_KEY = 'HYPERFUNCTOR_CART';
 interface CartItem {
-	readonly id: number;
+	readonly id: string;
 	readonly title: string;
 	readonly price: number;
 }
