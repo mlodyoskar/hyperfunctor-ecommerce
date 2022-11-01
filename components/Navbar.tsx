@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useCartStore } from '../context/CartContext';
 
 const navigationLinks = [
 	{
@@ -19,19 +20,14 @@ const navigationLinks = [
 
 export const Navbar = () => {
 	const { pathname } = useRouter();
+	const { items } = useCartStore();
 
 	return (
 		<header className="border-b border-gray-100">
 			<div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between sm:px-6 lg:px-8">
 				<div className="flex items-center">
 					<button type="button" className="p-2 sm:mr-4 lg:hidden">
-						<svg
-							className="h-6 w-6"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
+						<svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
 						</svg>
 					</button>
@@ -61,9 +57,15 @@ export const Navbar = () => {
 					<div className="ml-8 flex items-center">
 						<div className="flex items-center divide-x divide-gray-100 border-x border-gray-100">
 							<span>
-								<a href="/cart" className="block border-b-4 border-transparent p-6 hover:border-red-700">
+								<Link href="/cart" className="relative block border-b-4 border-transparent p-6 hover:border-red-700">
+									{items.length > 0 && (
+										<span className="absolute bottom-4 right-4 flex h-4 w-4 items-center justify-center rounded-full bg-red-700 text-center text-sm text-white">
+											<span className="sr-only">Items in the cart: </span>
+											{items.length}
+										</span>
+									)}
 									<svg
-										className="h-4 w-4"
+										className="z-20 h-4 w-4"
 										fill="none"
 										viewBox="0 0 24 24"
 										stroke="currentColor"
@@ -78,7 +80,7 @@ export const Navbar = () => {
 									</svg>
 
 									<span className="sr-only">Cart</span>
-								</a>
+								</Link>
 							</span>
 
 							<span>
