@@ -1,14 +1,19 @@
-import { ProductAPIResponse } from './ProductList';
 import Image from 'next/image';
 import { Markdown } from './Markdown';
-import { MarkdownContent } from '../types';
 import { useCartStore } from '../context/CartContext';
+import { MarkdownContent } from '../types';
 
-type ProductType = Omit<ProductAPIResponse, 'longDescription' | 'rating' | 'category' | 'description'>;
-
-type Props = {
-	product: ProductType & { longDescription: MarkdownContent };
-};
+interface Props {
+	product: {
+		name: string;
+		slug: string;
+		images: {
+			url: string;
+		}[];
+		price: number;
+		description: MarkdownContent;
+	};
+}
 
 export const Product = ({ product }: Props) => {
 	const { addItemToCart } = useCartStore();
@@ -24,8 +29,8 @@ export const Product = ({ product }: Props) => {
 				<div className="lg:col-span-3">
 					<div className="relative mt-4 bg-white">
 						<Image
-							alt={product.title}
-							src={product.image}
+							alt={product.name}
+							src={product.images[0].url}
 							className="h-72 w-full rounded-xl object-contain lg:h-[540px]"
 							width={300}
 							height={300}
@@ -119,13 +124,13 @@ export const Product = ({ product }: Props) => {
 						</div>
 
 						<div>
-							<p className="text-xl font-bold">${product.price}</p>
+							<p className="text-xl font-bold">${product.price / 100}</p>
 						</div>
 
 						<button
 							onClick={(e) => {
 								e.preventDefault();
-								addItemToCart({ id: product.id, price: product.price, title: product.title });
+								addItemToCart({ id: product.slug, price: product.price, title: product.name });
 							}}
 							className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
 						>
@@ -143,7 +148,7 @@ export const Product = ({ product }: Props) => {
 
 				<div className="lg:col-span-3">
 					<div className="prose max-w-none [&>iframe]:mt-6 [&>iframe]:aspect-video [&>iframe]:w-full [&>iframe]:rounded-xl">
-						<Markdown content={product.longDescription} />
+						<Markdown content={product.description} />
 					</div>
 				</div>
 			</div>

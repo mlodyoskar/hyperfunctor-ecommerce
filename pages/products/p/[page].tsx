@@ -1,6 +1,8 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import { Pagination } from '../../../components/Pagination';
 import { ProductList } from '../../../components/ProductList';
+import { GetProductsListDocument } from '../../../generated/graphql';
+import { apolloClient } from '../../../graphql/client';
 import { InferGetStaticPathsType } from '../../../types';
 import { getProducts } from '../../../utils/getProducts';
 
@@ -22,9 +24,12 @@ export const getStaticProps = async ({
 	params,
 }: GetStaticPropsContext<InferGetStaticPathsType<typeof getStaticPaths>>) => {
 	const page = params?.page;
-	const products = await getProducts(Number(page));
+	// const products = await getProducts(Number(page));
+	const { data } = await apolloClient.query({
+		query: GetProductsListDocument,
+	});
 
-	if (!products || products?.length <= 1) {
+	if (!data.products || data.products.length <= 1) {
 		return {
 			notFound: true,
 		};
@@ -32,7 +37,7 @@ export const getStaticProps = async ({
 
 	return {
 		props: {
-			data: products,
+			data: data.products,
 		},
 	};
 };
