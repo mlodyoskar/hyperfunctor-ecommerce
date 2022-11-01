@@ -8,6 +8,10 @@ const nextConfig = {
 				protocol: 'https',
 				hostname: 'naszsklep-api.vercel.app',
 			},
+			{
+				protocol: 'https',
+				hostname: 'images.unsplash.com',
+			},
 		],
 	},
 	async redirects() {

@@ -1,5 +1,10 @@
 {
 	"extends": ["next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"parserOptions": {
+		"ecmaVersion": 2020,
+		"project": ["tsconfig.json"],
+		"sourceType": "module"
+	},
 	"rules": {
 		"no-console": "warn",
 		"@typescript-eslint/prefer-readonly": "error"

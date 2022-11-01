@@ -1,27 +1,59 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
+const LOCAL_STORAGE_CART_KEY = 'HYPERFUNCTOR_CART';
 interface CartItem {
-	id: number;
-	title: string;
-	price: number;
+	readonly id: number;
+	readonly title: string;
+	readonly price: number;
 }
 
 interface CartItems {
-	item: CartItem;
-	count: number;
+	readonly item: CartItem;
+	readonly count: number;
 }
 
 interface CartStore {
-	items: CartItems[];
-	addItemToCart: (item: CartItem) => void;
-	removeItemFromCart: (id: CartItem['id']) => void;
+	readonly items: CartItems[];
+	readonly addItemToCart: (item: CartItem) => void;
+	readonly removeItemFromCart: (id: CartItem['id']) => void;
 }
 
 const CartStoreContext = createContext<CartStore | null>(null);
 
+const getItemsFromStorage = () => {
+	try {
+		const itmesFromStorage = localStorage.getItem(LOCAL_STORAGE_CART_KEY);
+		if (!itmesFromStorage) {
+			return [];
+		}
+		const items = JSON.parse(itmesFromStorage);
+		return items;
+	} catch (err) {
+		return [];
+	}
+};
+
+const addItemsToStorage = (items: CartItems[]) => {
+	localStorage.setItem(LOCAL_STORAGE_CART_KEY, JSON.stringify(items));
+};
+
 export const CartStoreContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const [cartStore, setCartStore] = useState<CartItems[]>([]);
-	console.log(cartStore);
+
+	useEffect(() => {
+		setCartStore(getItemsFromStorage());
+	}, []);
+
+	useEffect(() => {
+		if (cartStore && cartStore.length === 0) {
+			return;
+		}
+		if (!cartStore) {
+			return;
+		}
+
+		addItemsToStorage(cartStore);
+	}, [cartStore]);
 
 	const addItemToCart = (item: CartItem) => {
 		const seekedItem = cartStore.find((seekedItem) => seekedItem.item.id === item.id);
@@ -29,7 +61,7 @@ export const CartStoreContextProvider = ({ children }: { children: React.ReactNo
 			setCartStore((prevState) => [...prevState, { item, count: 1 }]);
 		} else {
 			setCartStore((prevState) =>
-				prevState.map((cartItem) => {
+				prevState?.map((cartItem) => {
 					if (cartItem.item.id === item.id) {
 						return { ...cartItem, count: cartItem.count + 1 };
 					}

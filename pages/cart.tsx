@@ -1,4 +1,5 @@
 import { useCartStore } from '../context/CartContext';
+import Image from 'next/image';
 
 const CartPage = () => {
 	const { items, removeItemFromCart } = useCartStore();
@@ -27,7 +28,9 @@ const CartPage = () => {
 										{items.map(({ item, count }) => (
 											<li key={item.id} className="flex items-center justify-between py-4">
 												<div className="flex items-start">
-													<img
+													<Image
+														width={400}
+														height={300}
 														alt="Trainer"
 														src="https://images.unsplash.com/photo-1565299999261-28ba859019bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
 														className="h-16 w-16 flex-shrink-0 rounded-lg object-cover"
