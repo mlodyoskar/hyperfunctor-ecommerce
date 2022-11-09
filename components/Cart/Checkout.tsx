@@ -1,62 +1,90 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { z } from 'zod';
 import { FormInput } from '../FormInput';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const REQUIRED_FIELD_ERROR = 'To pole jest wymagane';
 
 export const Checkout = () => {
-	const CheckoutFormSchema = z.object({
-		firstName: z.string(),
-		lastName: z.string(),
-		emailAddress: z.string().email(),
+	// const CheckoutFormSchema = z
+	// 	.object({
+	// 		firstName: z.string(),
+	// 		lastName: z.string(),
+	// 		// emailAddress: z.string().email(),
+	// 		// TODO: Write your own validation for that
+	// 		phoneNumber: z.string(),
+	// 		cardNumber: z.string(),
+	// 		expirationDate: z.string(),
+	// 		// TODO: Write your own validation for that
+	// 		CVC: z.string(),
+	// 		country: z.string(),
+	// 		// TODO: Write your own validation for that
+	// 		postCode: z.string(),
+	// 	})
+	// 	.required();
+
+	// type CheckoutForm = z.infer<typeof CheckoutFormSchema>;
+
+	const CheckoutFormSchema = yup.object().shape({
+		firstName: yup.string().required(),
+		lastName: yup.string().required(),
+		emailAddress: yup.string().email().required(),
 		// TODO: Write your own validation for that
-		phoneNumber: z.string(),
-		cardNumber: z.string(),
-		expirationDate: z.date(),
+		phoneNumber: yup.string().required(),
+		cardNumber: yup.string().required(),
+		expirationDate: yup.string().required(),
 		// TODO: Write your own validation for that
-		CVC: z.string(),
-		country: z.string(),
+		CVC: yup.string().required(),
+		country: yup.string().required(),
 		// TODO: Write your own validation for that
-		postCode: z.string(),
+		postCode: yup.string().required(),
 	});
 
-	type CheckoutForm = z.infer<typeof CheckoutFormSchema>;
+	type CheckoutForm = yup.InferType<typeof CheckoutFormSchema>;
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<CheckoutForm>({ resolver: zodResolver(CheckoutFormSchema) });
+	const { register, handleSubmit, formState, watch } = useForm<CheckoutForm>({
+		resolver: yupResolver(CheckoutFormSchema),
+	});
+
+	console.log(watch());
 
 	const onSubmit: SubmitHandler<CheckoutForm> = (data) => console.log(data);
 
+	console.log(formState);
+
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="bg-white py-12 md:py-24">
+		<div className="bg-white py-12 md:py-24">
 			<div className="mx-auto max-w-lg px-4 lg:px-8">
-				<form className="grid grid-cols-6 gap-4">
+				<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-6 gap-4">
 					<div className="col-span-3">
-						<FormInput {...register('firstName')} placeholder={'Michael'} errorMessage={errors.firstName?.message}>
-							First name
+						<FormInput {...register('firstName')} placeholder={'Michael'} errorMessage={formState.errors.firstName?.message}>
+							Imię
 						</FormInput>
 					</div>
 					<div className="col-span-3">
-						<FormInput {...register('lastName')} placeholder={'Jordan'} errorMessage={errors.lastName?.message}>
-							Last name
+						<FormInput {...register('lastName')} placeholder={'Jordan'} errorMessage={formState.errors.lastName?.message}>
+							Nazwisko
 						</FormInput>
 					</div>
 
 					<div className="col-span-6">
 						<FormInput
 							{...register('emailAddress')}
+							type="email"
 							placeholder={'michael.jordan@bulls.com'}
-							errorMessage={errors.emailAddress?.message}
+							errorMessage={formState.errors.emailAddress?.message}
 						>
-							Email
+							E-mail
 						</FormInput>
 					</div>
 
 					<div className="col-span-6">
-						<FormInput {...register('phoneNumber')} placeholder={'785-153-370'} errorMessage={errors.phoneNumber?.message}>
-							Phone number
+						<FormInput
+							{...register('phoneNumber')}
+							placeholder={'785-153-370'}
+							errorMessage={formState.errors.phoneNumber?.message}
+						>
+							Numer telefonu
 						</FormInput>
 					</div>
 
@@ -87,9 +115,9 @@ export const Checkout = () => {
 									<input
 										className="relative w-full rounded-bl-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
 										type="text"
-										name="card-expiration-date"
 										id="card-expiration-date"
 										placeholder="MM / YY"
+										{...register('expirationDate')}
 									/>
 								</div>
 
@@ -101,9 +129,9 @@ export const Checkout = () => {
 									<input
 										className="relative w-full rounded-br-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
 										type="text"
-										name="card-cvc"
 										id="card-cvc"
 										placeholder="CVC"
+										{...register('CVC')}
 									/>
 								</div>
 							</div>
@@ -122,8 +150,8 @@ export const Checkout = () => {
 								<select
 									className="relative w-full rounded-t-lg border-gray-200 p-2.5 text-sm focus:z-10"
 									id="country"
-									name="country"
 									autoComplete="country-name"
+									{...register('country')}
 								>
 									<option>Poland</option>
 									<option>England</option>
@@ -140,10 +168,10 @@ export const Checkout = () => {
 								<input
 									className="relative w-full rounded-b-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
 									type="text"
-									name="postal-code"
 									id="postal-code"
 									autoComplete="postal-code"
 									placeholder="ZIP/Post Code"
+									{...register('postCode')}
 								/>
 							</div>
 						</div>
@@ -156,6 +184,6 @@ export const Checkout = () => {
 					</div>
 				</form>
 			</div>
-		</form>
+		</div>
 	);
 };
