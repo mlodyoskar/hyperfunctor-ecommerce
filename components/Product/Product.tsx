@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import { Markdown } from './Markdown';
-import { useCartStore } from '../context/CartContext';
-import { MarkdownContent } from '../types';
+import { useCartStore } from '../../context/CartContext';
+import { MarkdownContent } from '../../types';
+import { Markdown } from '../Markdown';
+import { ProductReview } from './ProductReview';
 
 interface Props {
 	product: {
@@ -152,6 +153,7 @@ export const Product = ({ product }: Props) => {
 					</div>
 				</div>
 			</div>
+			<ProductReview />
 		</div>
 	);
 };
