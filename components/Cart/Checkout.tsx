@@ -2,51 +2,31 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { FormInput } from '../FormInput';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import clsx from 'clsx';
 
 const REQUIRED_FIELD_ERROR = 'To pole jest wymagane';
 
 export const Checkout = () => {
-	// const CheckoutFormSchema = z
-	// 	.object({
-	// 		firstName: z.string(),
-	// 		lastName: z.string(),
-	// 		// emailAddress: z.string().email(),
-	// 		// TODO: Write your own validation for that
-	// 		phoneNumber: z.string(),
-	// 		cardNumber: z.string(),
-	// 		expirationDate: z.string(),
-	// 		// TODO: Write your own validation for that
-	// 		CVC: z.string(),
-	// 		country: z.string(),
-	// 		// TODO: Write your own validation for that
-	// 		postCode: z.string(),
-	// 	})
-	// 	.required();
-
-	// type CheckoutForm = z.infer<typeof CheckoutFormSchema>;
-
 	const CheckoutFormSchema = yup.object().shape({
-		firstName: yup.string().required(),
-		lastName: yup.string().required(),
-		emailAddress: yup.string().email().required(),
+		firstName: yup.string().required(REQUIRED_FIELD_ERROR),
+		lastName: yup.string().required(REQUIRED_FIELD_ERROR),
+		emailAddress: yup.string().email().required(REQUIRED_FIELD_ERROR),
 		// TODO: Write your own validation for that
-		phoneNumber: yup.string().required(),
-		cardNumber: yup.string().required(),
-		expirationDate: yup.string().required(),
+		phoneNumber: yup.string().required(REQUIRED_FIELD_ERROR),
+		cardNumber: yup.string().required(REQUIRED_FIELD_ERROR),
+		expirationDate: yup.string().required(REQUIRED_FIELD_ERROR),
 		// TODO: Write your own validation for that
-		CVC: yup.string().required(),
-		country: yup.string().required(),
+		CVC: yup.string().required(REQUIRED_FIELD_ERROR),
+		country: yup.string().required(REQUIRED_FIELD_ERROR),
 		// TODO: Write your own validation for that
-		postCode: yup.string().required(),
+		postCode: yup.string().required(REQUIRED_FIELD_ERROR),
 	});
 
 	type CheckoutForm = yup.InferType<typeof CheckoutFormSchema>;
 
-	const { register, handleSubmit, formState, watch } = useForm<CheckoutForm>({
+	const { register, handleSubmit, formState } = useForm<CheckoutForm>({
 		resolver: yupResolver(CheckoutFormSchema),
 	});
-
-	console.log(watch());
 
 	const onSubmit: SubmitHandler<CheckoutForm> = (data) => console.log(data);
 
@@ -89,7 +69,7 @@ export const Checkout = () => {
 					</div>
 
 					<fieldset className="col-span-6">
-						<legend className="mb-1 block text-sm text-gray-600">Card Details</legend>
+						<legend className="mb-1 block text-sm text-gray-600">Dane karty kredytowej</legend>
 
 						<div className="-space-y-px rounded-lg bg-white shadow-sm">
 							<div>
@@ -98,10 +78,13 @@ export const Checkout = () => {
 								</label>
 
 								<input
-									className="relative w-full rounded-t-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
+									className={clsx('relative w-full rounded-t-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10', {
+										'border border-red-500 bg-red-50 text-red-900 placeholder-red-500 focus:border-red-500 focus:ring-red-500':
+											formState.errors.cardNumber?.message,
+									})}
 									type="text"
 									id="card-number"
-									placeholder="Card number"
+									placeholder="Numer karty"
 									{...register('cardNumber')}
 								/>
 							</div>
@@ -113,7 +96,13 @@ export const Checkout = () => {
 									</label>
 
 									<input
-										className="relative w-full rounded-bl-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
+										className={clsx(
+											'relative w-full rounded-bl-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10',
+											{
+												'border border-red-500 bg-red-50 text-red-900 placeholder-red-500 focus:border-red-500 focus:ring-red-500':
+													formState.errors.expirationDate?.message,
+											},
+										)}
 										type="text"
 										id="card-expiration-date"
 										placeholder="MM / YY"
@@ -127,7 +116,13 @@ export const Checkout = () => {
 									</label>
 
 									<input
-										className="relative w-full rounded-br-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
+										className={clsx(
+											'relative w-full rounded-br-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10',
+											{
+												'border border-red-500 bg-red-50 text-red-900 placeholder-red-500 focus:border-red-500 focus:ring-red-500':
+													formState.errors.CVC?.message,
+											},
+										)}
 										type="text"
 										id="card-cvc"
 										placeholder="CVC"
@@ -166,11 +161,14 @@ export const Checkout = () => {
 								</label>
 
 								<input
-									className="relative w-full rounded-b-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10"
+									className={clsx('relative w-full rounded-b-lg border-gray-200 p-2.5 text-sm placeholder-gray-400 focus:z-10', {
+										'border border-red-500 bg-red-50 text-red-900 placeholder-red-500 focus:border-red-500 focus:ring-red-500':
+											formState.errors.postCode?.message,
+									})}
 									type="text"
 									id="postal-code"
 									autoComplete="postal-code"
-									placeholder="ZIP/Post Code"
+									placeholder="Kod pocztowy"
 									{...register('postCode')}
 								/>
 							</div>
