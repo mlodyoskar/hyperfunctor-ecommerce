@@ -153,7 +153,7 @@ export const Product = ({ product }: Props) => {
 					</div>
 				</div>
 			</div>
-			<ProductReview />
+			<ProductReview productSlug={product.slug} />
 		</div>
 	);
 };
