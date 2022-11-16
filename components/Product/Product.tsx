@@ -3,31 +3,31 @@ import { useCartStore } from '../../context/CartContext';
 import { MarkdownContent } from '../../types';
 import { Markdown } from '../Markdown';
 import { ProductReview } from './ProductReview';
-import { Dialog } from '@headlessui/react';
 import { useState } from 'react';
 import { ReviewModal } from '../Modals/ReviewModal';
+import { GetProductDetailsBySlugQuery } from '../../generated/graphql';
+import dayjs from 'dayjs';
+
+export type Product = Omit<NonNullable<GetProductDetailsBySlugQuery['product']>, 'description'> & {
+	description: MarkdownContent;
+};
 
 interface Props {
-	product: {
-		name: string;
-		slug: string;
-		images: {
-			url: string;
-		}[];
-		price: number;
-		description: MarkdownContent;
-	};
+	product: Product;
 }
 
 export const Product = ({ product }: Props) => {
 	const { addItemToCart } = useCartStore();
 	const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
-	console.log(reviewModalOpen);
+	if (!product) {
+		return <h1>Nie znalazłem produktu</h1>;
+	}
+
 	return (
 		<div className="relative mx-auto max-w-screen-xl px-4 py-8">
 			<div>
-				<h1 className="text-2xl font-bold lg:text-3xl">Simple Clothes Basic Tee</h1>
+				<h1 className="text-2xl font-bold lg:text-3xl">{product.name}</h1>
 
 				<p className="mt-1 text-sm text-gray-500">SKU: #012345</p>
 			</div>
@@ -144,14 +144,17 @@ export const Product = ({ product }: Props) => {
 							Add to cart
 						</button>
 
-						<button
-							type="button"
-							className="w-full rounded border border-gray-300 bg-gray-100 px-6 py-3 text-sm font-bold uppercase tracking-wide"
-							onClick={() => setReviewModalOpen(true)}
-						>
-							Przeczytaj opinie
-						</button>
-						<ReviewModal open={reviewModalOpen} setOpen={setReviewModalOpen} />
+						{product.reviews.length > 0 && (
+							<button
+								type="button"
+								className="w-full rounded border border-gray-300 bg-gray-100 px-6 py-3 text-sm font-bold uppercase tracking-wide"
+								onClick={() => setReviewModalOpen(true)}
+							>
+								Przeczytaj opinie
+							</button>
+						)}
+
+						<ReviewModal reviews={product.reviews} open={reviewModalOpen} setOpen={setReviewModalOpen} />
 					</form>
 				</div>
 

@@ -1,17 +1,18 @@
-import { Fragment, useRef } from 'react';
+import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { Product } from '../Product/Product';
+import dayjs from 'dayjs';
 
 interface Props {
 	open: boolean;
 	setOpen: (isOpen: boolean) => void;
+	reviews: Product['reviews'];
 }
 
-export const ReviewModal = ({ open, setOpen }: Props) => {
-	const cancelButtonRef = useRef(null);
-
+export const ReviewModal = ({ open, setOpen, reviews }: Props) => {
 	return (
 		<Transition.Root show={open} as={Fragment}>
-			<Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+			<Dialog as="div" className="relative z-10" onClose={setOpen}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
@@ -56,7 +57,7 @@ export const ReviewModal = ({ open, setOpen }: Props) => {
 										</div>
 										<div className=" mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
 											<Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-												(4) Wszystkie opinie
+												({reviews.length}) Wszystkie opinie
 											</Dialog.Title>
 											<button className="absolute top-0 right-0" onClick={() => setOpen(false)}>
 												<svg
@@ -72,47 +73,18 @@ export const ReviewModal = ({ open, setOpen }: Props) => {
 
 												<span className="sr-only">Close modal</span>
 											</button>
-											<div className="mt-4 max-h-[34rem] overflow-scroll px-4 md:max-h-96">
-												<div>
-													<p className="text-bold m-0">Micheal Jordan</p>
-													<p className="mb-2 text-xs text-gray-700">July 12, 2021</p>
-													<p className="text-sm text-gray-700">
-														Kurtka warta swojej ceny, jest świetna. Polecam brać rozmiar mniejszy niż zwykle. Ja mam 174cm i XS jest
-														idealna. Jeśli ktoś woli bardziej over to rozmiar S. Należy pamiętać, iż jest to kurtka krótka tzn.
-														podczas schylania będzie widać lędźwie.
-													</p>
-													<hr className="my-2 h-px border-0 bg-gray-300"></hr>
-												</div>
-												<div>
-													<p className="text-bold m-0">Micheal Jordan</p>
-													<p className="mb-2 text-xs text-gray-700">July 12, 2021</p>
-													<p className="text-sm text-gray-700">
-														Kurtka warta swojej ceny, jest świetna. Polecam brać rozmiar mniejszy niż zwykle. Ja mam 174cm i XS jest
-														idealna. Jeśli ktoś woli bardziej over to rozmiar S. Należy pamiętać, iż jest to kurtka krótka tzn.
-														podczas schylania będzie widać lędźwie.
-													</p>
-													<hr className="my-2 h-px border-0 bg-gray-300"></hr>
-												</div>
-												<div>
-													<p className="text-bold m-0">Micheal Jordan</p>
-													<p className="mb-2 text-xs text-gray-700">July 12, 2021</p>
-													<p className="text-sm text-gray-700">
-														Kurtka warta swojej ceny, jest świetna. Polecam brać rozmiar mniejszy niż zwykle. Ja mam 174cm i XS jest
-														idealna. Jeśli ktoś woli bardziej over to rozmiar S. Należy pamiętać, iż jest to kurtka krótka tzn.
-														podczas schylania będzie widać lędźwie.
-													</p>
-													<hr className="my-2 h-px border-0 bg-gray-300"></hr>
-												</div>
-												<div>
-													<p className="text-bold m-0">Micheal Jordan</p>
-													<p className="mb-2 text-xs text-gray-700">July 12, 2021</p>
-													<p className="text-sm text-gray-700">
-														Kurtka warta swojej ceny, jest świetna. Polecam brać rozmiar mniejszy niż zwykle. Ja mam 174cm i XS jest
-														idealna. Jeśli ktoś woli bardziej over to rozmiar S. Należy pamiętać, iż jest to kurtka krótka tzn.
-														podczas schylania będzie widać lędźwie.
-													</p>
-													<hr className="my-2 h-px border-0 bg-gray-300"></hr>
-												</div>
+											<div className="mt-4 max-h-[34rem] max-w-sm overflow-scroll px-4 md:max-h-[30rem]">
+												{reviews.map(({ id, name, createdAt, content }) => {
+													const formattedDate = dayjs(createdAt).format('DD MMM YYYY');
+													return (
+														<div key={id}>
+															<p className="text-bold m-0">{name}</p>
+															<p className="mb-2 text-xs text-gray-700">{formattedDate}</p>
+															<p className="break-words text-sm text-gray-700">{content}</p>
+															<hr className="my-2 h-px border-0 bg-gray-300"></hr>
+														</div>
+													);
+												})}
 											</div>
 										</div>
 									</div>
