@@ -3,6 +3,9 @@ import { useCartStore } from '../../context/CartContext';
 import { MarkdownContent } from '../../types';
 import { Markdown } from '../Markdown';
 import { ProductReview } from './ProductReview';
+import { Dialog } from '@headlessui/react';
+import { useState } from 'react';
+import { ReviewModal } from '../Modals/ReviewModal';
 
 interface Props {
 	product: {
@@ -18,6 +21,9 @@ interface Props {
 
 export const Product = ({ product }: Props) => {
 	const { addItemToCart } = useCartStore();
+	const [reviewModalOpen, setReviewModalOpen] = useState(false);
+
+	console.log(reviewModalOpen);
 	return (
 		<div className="relative mx-auto max-w-screen-xl px-4 py-8">
 			<div>
@@ -141,9 +147,11 @@ export const Product = ({ product }: Props) => {
 						<button
 							type="button"
 							className="w-full rounded border border-gray-300 bg-gray-100 px-6 py-3 text-sm font-bold uppercase tracking-wide"
+							onClick={() => setReviewModalOpen(true)}
 						>
-							Notify when on sale
+							Przeczytaj opinie
 						</button>
+						<ReviewModal open={reviewModalOpen} setOpen={setReviewModalOpen} />
 					</form>
 				</div>
 
