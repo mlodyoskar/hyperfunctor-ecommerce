@@ -1,5 +1,4 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
-import { Product } from '../../components/Product';
 import { InferGetStaticPathsType } from '../../types';
 import { serialize } from 'next-mdx-remote/serialize';
 import { apolloClient } from '../../graphql/client';
@@ -10,6 +9,7 @@ import {
 	GetProductsListSlugsDocument,
 	GetProductsListSlugsQuery,
 } from '../../generated/graphql';
+import { Product } from '../../components/Product/Product';
 
 const ProductPage = ({ product }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (

@@ -21,6 +21,12 @@ query getProductDetailsBySlug($slug: String) {
 			url
 		}
 		slug
+		reviews {
+			id
+			name
+			content
+			createdAt
+		}
 	}
 }
 
