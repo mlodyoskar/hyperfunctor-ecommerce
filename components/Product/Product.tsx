@@ -6,7 +6,6 @@ import { ProductReview } from './ProductReview';
 import { useState } from 'react';
 import { ReviewModal } from '../Modals/ReviewModal';
 import { GetProductDetailsBySlugQuery } from '../../generated/graphql';
-import dayjs from 'dayjs';
 
 export type Product = Omit<NonNullable<GetProductDetailsBySlugQuery['product']>, 'description'> & {
 	description: MarkdownContent;

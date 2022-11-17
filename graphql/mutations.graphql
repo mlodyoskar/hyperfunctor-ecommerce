@@ -3,3 +3,9 @@ mutation createProductReview($review: ReviewCreateInput!) {
 		id
 	}
 }
+
+mutation publishProductReview($id: ID!) {
+	publishReview(to: PUBLISHED, where: { id: $id }) {
+		id
+	}
+}

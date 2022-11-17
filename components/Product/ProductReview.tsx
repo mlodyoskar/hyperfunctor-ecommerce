@@ -2,7 +2,7 @@ import { FormInput } from '../FormInput';
 import * as yup from 'yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCreateProductReviewMutation } from '../../generated/graphql';
+import { useCreateProductReviewMutation, usePublishProductReviewMutation } from '../../generated/graphql';
 import { useState } from 'react';
 import clsx from 'clsx';
 import LoadingSpinner from '../../public/oval.svg';
@@ -25,6 +25,8 @@ interface Props {
 
 export const ProductReview = ({ productSlug }: Props) => {
 	const [createProductReview, createProductReviewResult] = useCreateProductReviewMutation();
+	const [publishProductReview, publishProductReviewResult] = usePublishProductReviewMutation();
+
 	const [reviewAdded, setReviewAdded] = useState(false);
 
 	const { register, handleSubmit, formState } = useForm<ReviewForm>({
@@ -32,7 +34,7 @@ export const ProductReview = ({ productSlug }: Props) => {
 	});
 
 	const onSubmit: SubmitHandler<ReviewForm> = async (data) => {
-		await createProductReview({
+		const result = await createProductReview({
 			variables: {
 				review: {
 					content: data.reviewText,
@@ -45,6 +47,12 @@ export const ProductReview = ({ productSlug }: Props) => {
 				},
 			},
 		});
+
+		if (!result.data?.createReview?.id) {
+			return;
+		}
+
+		const x = await publishProductReview({ variables: { id: result.data?.createReview?.id } });
 
 		setReviewAdded(true);
 	};
