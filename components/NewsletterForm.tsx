@@ -1,8 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import clsx from 'clsx';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { FormInput } from './FormInput';
+import { NewsletterSuccessModal } from './Modals/NewsletterSuccessModal';
 
 const NewsletterFormSchema = yup.object().shape({
 	email: yup.string().email().required(),
@@ -11,12 +11,13 @@ const NewsletterFormSchema = yup.object().shape({
 type NewsletterForm = yup.InferType<typeof NewsletterFormSchema>;
 
 export const NewsletterForm = () => {
+	const [newsletterModalOpen, setNewsletterModalOpen] = useState(false);
 	const { register, handleSubmit, formState } = useForm<NewsletterForm>({
 		resolver: yupResolver(NewsletterFormSchema),
 	});
 
 	const onSubmit: SubmitHandler<NewsletterForm> = async (data) => {
-		const res = await fetch('/api/newsletter', {
+		await fetch('/api/newsletter', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json, text/plain, */*',
@@ -24,9 +25,8 @@ export const NewsletterForm = () => {
 			},
 			body: JSON.stringify({ email: data.email }),
 		});
-		const x = await res.json();
 
-		console.log(x);
+		setNewsletterModalOpen(true);
 	};
 
 	return (
@@ -72,6 +72,7 @@ export const NewsletterForm = () => {
 					</div>
 				</div>
 			</form>
+			<NewsletterSuccessModal open={newsletterModalOpen} setOpen={setNewsletterModalOpen} />
 		</aside>
 	);
 };
