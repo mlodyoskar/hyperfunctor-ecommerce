@@ -1,13 +1,39 @@
-import { useCartStore } from '../context/CartContext';
+import { useCartStore } from '../../context/CartContext';
 import Image from 'next/image';
-import { Checkout } from '../components/Cart/Checkout';
-import { Button } from '../components/Button';
+import { Button } from '../../components/Button';
+import { loadStripe } from '@stripe/stripe-js';
+import { invariant } from '@apollo/client/utilities/globals';
+import Stripe from 'stripe';
 
-const CartPage = () => {
+const stripePublishKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+invariant(stripePublishKey, 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is missing');
+const stripePromise = loadStripe(stripePublishKey);
+
+const CheckoutPage = () => {
 	const { items, removeItemFromCart } = useCartStore();
 
 	const handleCreateOrder = async () => {
-		await fetch('/api/checkout');
+		const stripe = await stripePromise;
+		invariant(stripe, 'Something went wrong');
+
+		const res = await fetch('/api/checkout', {
+			method: 'POST',
+			headers: { 'Content-type': 'application/json' },
+			body: JSON.stringify(
+				items.map((cartItem) => ({
+					quantity: cartItem.count,
+					price_data: {
+						currency: 'PLN',
+						unit_amount: cartItem.item.price,
+						product_data: { name: cartItem.item.title },
+					},
+				})),
+			),
+		});
+
+		const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } = await res.json();
+
+		stripe.redirectToCheckout({ sessionId: session.id });
 	};
 
 	return (
@@ -85,12 +111,10 @@ const CartPage = () => {
 							</div>
 						</div>
 					</div>
-
-					{/* <Checkout /> */}
 				</div>
 			</div>
 		</section>
 	);
 };
 
-export default CartPage;
+export default CheckoutPage;

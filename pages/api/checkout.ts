@@ -3,7 +3,12 @@ import { NextApiHandler } from 'next';
 import { Stripe } from 'stripe';
 
 const handler: NextApiHandler = async (req, res) => {
+	if (req.method !== 'POST') {
+		res.status(405).json({ message: 'Use POST method' });
+	}
+
 	const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+	const APP_URL = process.env.VERCEL_URL || 'http://localhost:3000';
 	invariant(stripeSecretKey, 'STRIPE_SECRET_KEY is missing');
 
 	const stripe = new Stripe(stripeSecretKey, { apiVersion: '2022-11-15' });
@@ -12,18 +17,9 @@ const handler: NextApiHandler = async (req, res) => {
 		mode: 'payment',
 		locale: 'pl',
 		payment_method_types: ['card', 'p24', 'blik'],
-		success_url: 'http://localhost:3000',
-		cancel_url: 'http://localhost:3000',
-		line_items: [
-			{
-				quantity: 3,
-				price_data: {
-					currency: 'PLN',
-					unit_amount: 2137,
-					product_data: { name: 'Mój produkt', description: 'Meega fajny produkt' },
-				},
-			},
-		],
+		success_url: `${APP_URL}/checkout/success`,
+		cancel_url: `${APP_URL}/checkout/canceled`,
+		line_items: req.body,
 	});
 
 	if (!stripeCheckoutSession.url) {
@@ -31,7 +27,7 @@ const handler: NextApiHandler = async (req, res) => {
 		return;
 	}
 
-	res.status(201).redirect(stripeCheckoutSession.url).json({ session: stripeCheckoutSession });
+	res.status(201).json({ session: stripeCheckoutSession });
 };
 
 export default handler;
