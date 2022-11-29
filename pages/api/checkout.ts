@@ -8,7 +8,9 @@ const handler: NextApiHandler = async (req, res) => {
 	}
 
 	const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-	const APP_URL = process.env.VERCEL_URL || 'http://localhost:3000';
+	const VERCEL_URL = process.env.VERCEL_URL;
+
+	const APP_URL = VERCEL_URL ? `https://${VERCEL_URL}` : 'http://localhost:3000';
 	invariant(stripeSecretKey, 'STRIPE_SECRET_KEY is missing');
 
 	const stripe = new Stripe(stripeSecretKey, { apiVersion: '2022-11-15' });
