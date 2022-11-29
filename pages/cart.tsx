@@ -1,16 +1,21 @@
 import { useCartStore } from '../context/CartContext';
 import Image from 'next/image';
 import { Checkout } from '../components/Cart/Checkout';
+import { Button } from '../components/Button';
 
 const CartPage = () => {
 	const { items, removeItemFromCart } = useCartStore();
+
+	const handleCreateOrder = async () => {
+		await fetch('/api/checkout');
+	};
 
 	return (
 		<section>
 			<h1 className="sr-only">Checkout</h1>
 
 			<div className="relative mx-auto max-w-screen-2xl">
-				<div className="grid grid-cols-1 md:grid-cols-2">
+				<div className="grid grid-cols-1 md:grid-cols-1">
 					<div className="bg-gray-50 py-12 md:py-24">
 						<div className="mx-auto max-w-lg px-4 lg:px-8">
 							<div className="flex items-center">
@@ -24,7 +29,7 @@ const CartPage = () => {
 								<p className="mt-1 text-sm text-gray-500">For the purchase of</p>
 							</div>
 							<div className="mt-12">
-								<div className="flow-root">
+								<div className="mb-10 flow-root">
 									<ul className="-my-4 divide-y divide-gray-200">
 										{items.map(({ item, count }) => (
 											<li key={item.id} className="flex items-center justify-between py-4">
@@ -76,11 +81,12 @@ const CartPage = () => {
 										))}
 									</ul>
 								</div>
+								<Button onClick={handleCreateOrder}>Złóz zamówienie</Button>
 							</div>
 						</div>
 					</div>
 
-					<Checkout />
+					{/* <Checkout /> */}
 				</div>
 			</div>
 		</section>
