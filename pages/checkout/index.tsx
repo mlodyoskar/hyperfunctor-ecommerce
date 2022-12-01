@@ -1,16 +1,42 @@
-import { useCartStore } from '../context/CartContext';
+import { useCartStore } from '../../context/CartContext';
 import Image from 'next/image';
-import { Checkout } from '../components/Cart/Checkout';
+import { Button } from '../../components/Button';
+import { loadStripe } from '@stripe/stripe-js';
+import { invariant } from '@apollo/client/utilities/globals';
+import Stripe from 'stripe';
 
-const CartPage = () => {
+const stripePublishKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+invariant(stripePublishKey, 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is missing');
+const stripePromise = loadStripe(stripePublishKey);
+
+const CheckoutPage = () => {
 	const { items, removeItemFromCart } = useCartStore();
+
+	const cartPriceSum = items.reduce((acc, obj) => {
+		return acc + obj.item.price;
+	}, 0);
+
+	const handleCreateOrder = async () => {
+		const stripe = await stripePromise;
+		invariant(stripe, 'Something went wrong');
+
+		const res = await fetch('/api/checkout', {
+			method: 'POST',
+			headers: { 'Content-type': 'application/json' },
+			body: JSON.stringify(items.map((cartItem) => ({ slug: cartItem.item.id, count: cartItem.count }))),
+		});
+
+		const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } = await res.json();
+
+		stripe.redirectToCheckout({ sessionId: session.id });
+	};
 
 	return (
 		<section>
 			<h1 className="sr-only">Checkout</h1>
 
 			<div className="relative mx-auto max-w-screen-2xl">
-				<div className="grid grid-cols-1 md:grid-cols-2">
+				<div className="grid grid-cols-1 md:grid-cols-1">
 					<div className="bg-gray-50 py-12 md:py-24">
 						<div className="mx-auto max-w-lg px-4 lg:px-8">
 							<div className="flex items-center">
@@ -20,11 +46,11 @@ const CartPage = () => {
 							</div>
 
 							<div className="mt-8">
-								<p className="text-2xl font-medium tracking-tight">$99.99</p>
+								<p className="text-2xl font-medium tracking-tight">{cartPriceSum / 100} PLN</p>
 								<p className="mt-1 text-sm text-gray-500">For the purchase of</p>
 							</div>
 							<div className="mt-12">
-								<div className="flow-root">
+								<div className="mb-10 flow-root">
 									<ul className="-my-4 divide-y divide-gray-200">
 										{items.map(({ item, count }) => (
 											<li key={item.id} className="flex items-center justify-between py-4">
@@ -32,8 +58,8 @@ const CartPage = () => {
 													<Image
 														width={400}
 														height={300}
-														alt="Trainer"
-														src="https://images.unsplash.com/photo-1565299999261-28ba859019bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+														alt={`${item.title} image`}
+														src={item.images[0] || ''}
 														className="h-16 w-16 flex-shrink-0 rounded-lg object-cover"
 													/>
 
@@ -56,7 +82,7 @@ const CartPage = () => {
 
 												<div className="flex flex-col">
 													<p className="text-sm">
-														${item.price / 100}
+														{item.price / 100} PLN
 														<small className="text-gray-500"> x {count}</small>
 													</p>
 													<button onClick={() => removeItemFromCart(item.id)} className="self-end text-red-700">
@@ -76,15 +102,14 @@ const CartPage = () => {
 										))}
 									</ul>
 								</div>
+								<Button onClick={handleCreateOrder}>Złóz zamówienie</Button>
 							</div>
 						</div>
 					</div>
-
-					<Checkout />
 				</div>
 			</div>
 		</section>
 	);
 };
 
-export default CartPage;
+export default CheckoutPage;

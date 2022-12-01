@@ -136,7 +136,12 @@ export const Product = ({ product }: Props) => {
 						<button
 							onClick={(e) => {
 								e.preventDefault();
-								addItemToCart({ id: product.slug, price: product.price, title: product.name });
+								addItemToCart({
+									id: product.slug,
+									price: product.price,
+									title: product.name,
+									images: product.images.map((img) => img.url),
+								});
 							}}
 							className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
 						>

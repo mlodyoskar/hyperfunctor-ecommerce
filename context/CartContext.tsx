@@ -5,6 +5,7 @@ interface CartItem {
 	readonly id: string;
 	readonly title: string;
 	readonly price: number;
+	readonly images: string[];
 }
 
 interface CartItems {
@@ -16,6 +17,7 @@ interface CartStore {
 	readonly items: CartItems[];
 	readonly addItemToCart: (item: CartItem) => void;
 	readonly removeItemFromCart: (id: CartItem['id']) => void;
+	readonly removeAllItemsFromCart: () => void;
 }
 
 const CartStoreContext = createContext<CartStore | null>(null);
@@ -71,6 +73,10 @@ export const CartStoreContextProvider = ({ children }: { children: React.ReactNo
 		}
 	};
 
+	const removeAllItemsFromCart = () => {
+		setCartStore([]);
+	};
+
 	const removeItemFromCart = (id: CartItem['id']) => {
 		const seekedItem = cartStore.find((seekedItem) => seekedItem.item.id === id);
 		if (!seekedItem) {
@@ -91,7 +97,7 @@ export const CartStoreContextProvider = ({ children }: { children: React.ReactNo
 	};
 
 	return (
-		<CartStoreContext.Provider value={{ addItemToCart, removeItemFromCart, items: cartStore }}>
+		<CartStoreContext.Provider value={{ removeAllItemsFromCart, addItemToCart, removeItemFromCart, items: cartStore }}>
 			{children}
 		</CartStoreContext.Provider>
 	);
