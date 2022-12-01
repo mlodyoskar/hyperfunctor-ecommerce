@@ -10,6 +10,18 @@ query getProductsList {
 		}
 	}
 }
+query getProductBySlug($slug: String) {
+	product(where: { slug: $slug }) {
+		id
+		slug
+		name
+		description
+		price
+		images {
+			url
+		}
+	}
+}
 
 query getProductDetailsBySlug($slug: String) {
 	product(where: { slug: $slug }) {
