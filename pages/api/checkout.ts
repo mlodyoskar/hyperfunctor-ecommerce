@@ -16,17 +16,12 @@ const BodySchema = z
 	})
 	.array();
 
-type BodyType = z.infer<typeof BodySchema>;
-
-const parseBody = (body: unknown): BodyType => {
+const parseBody = (body: unknown) => {
 	try {
-		BodySchema.parse(body);
+		return BodySchema.parse(body);
 	} catch (err) {
-		if (err instanceof z.ZodError) {
-			throw new Error('Parsing failed');
-		}
+		throw new Error('Parsing body failed');
 	}
-	return body as BodyType;
 };
 
 const handler: NextApiHandler = async (req, res) => {
