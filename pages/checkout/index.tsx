@@ -12,6 +12,10 @@ const stripePromise = loadStripe(stripePublishKey);
 const CheckoutPage = () => {
 	const { items, removeItemFromCart } = useCartStore();
 
+	const cartPriceSum = items.reduce((acc, obj) => {
+		return acc + obj.item.price;
+	}, 0);
+
 	const handleCreateOrder = async () => {
 		const stripe = await stripePromise;
 		invariant(stripe, 'Something went wrong');
@@ -42,7 +46,7 @@ const CheckoutPage = () => {
 							</div>
 
 							<div className="mt-8">
-								<p className="text-2xl font-medium tracking-tight">$99.99</p>
+								<p className="text-2xl font-medium tracking-tight">{cartPriceSum / 100} PLN</p>
 								<p className="mt-1 text-sm text-gray-500">For the purchase of</p>
 							</div>
 							<div className="mt-12">
@@ -54,8 +58,8 @@ const CheckoutPage = () => {
 													<Image
 														width={400}
 														height={300}
-														alt="Trainer"
-														src="https://images.unsplash.com/photo-1565299999261-28ba859019bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+														alt={`${item.title} image`}
+														src={item.images[0] || ''}
 														className="h-16 w-16 flex-shrink-0 rounded-lg object-cover"
 													/>
 
@@ -78,7 +82,7 @@ const CheckoutPage = () => {
 
 												<div className="flex flex-col">
 													<p className="text-sm">
-														${item.price / 100}
+														{item.price / 100} PLN
 														<small className="text-gray-500"> x {count}</small>
 													</p>
 													<button onClick={() => removeItemFromCart(item.id)} className="self-end text-red-700">

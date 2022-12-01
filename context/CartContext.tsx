@@ -5,6 +5,7 @@ interface CartItem {
 	readonly id: string;
 	readonly title: string;
 	readonly price: number;
+	readonly images: string[];
 }
 
 interface CartItems {
