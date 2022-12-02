@@ -8,7 +8,7 @@ interface CartItem {
 	readonly images: string[];
 }
 
-interface CartItems {
+export interface CartItems {
 	readonly item: CartItem;
 	readonly count: number;
 }

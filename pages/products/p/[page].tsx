@@ -2,7 +2,7 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import { ProductList } from '../../../components/ProductList';
 import { GetProductsListDocument } from '../../../generated/graphql';
 import { apolloClient } from '../../../graphql/client';
-import { InferGetStaticPathsType } from '../../../types';
+import { InferGetStaticPathsType } from '../../../types/types';
 
 const ProductsPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (

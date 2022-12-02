@@ -1,6 +1,6 @@
 import { MDXRemote } from 'next-mdx-remote';
 import Link from 'next/link';
-import { MarkdownContent } from '../types';
+import { MarkdownContent } from '../types/types';
 
 interface Props {
 	content: MarkdownContent;

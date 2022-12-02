@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useCartStore } from '../../context/CartContext';
-import { MarkdownContent } from '../../types';
+import { MarkdownContent } from '../../types/types';
 import { Markdown } from '../Markdown';
 import { ProductReview } from './ProductReview';
 import { useState } from 'react';

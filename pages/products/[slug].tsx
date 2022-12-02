@@ -1,5 +1,5 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
-import { InferGetStaticPathsType } from '../../types';
+import { InferGetStaticPathsType } from '../../types/types';
 import { serialize } from 'next-mdx-remote/serialize';
 import { apolloClient } from '../../graphql/client';
 import {

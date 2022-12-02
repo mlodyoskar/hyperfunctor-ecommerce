@@ -1,9 +1,11 @@
-import { useCartStore } from '../../context/CartContext';
+import { CartItems, useCartStore } from '../../context/CartContext';
 import Image from 'next/image';
 import { Button } from '../../components/Button';
 import { loadStripe } from '@stripe/stripe-js';
 import { invariant } from '@apollo/client/utilities/globals';
 import Stripe from 'stripe';
+import { useMutation } from '@tanstack/react-query';
+import { fetcher } from '../../utils/fetcher';
 
 const stripePublishKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 invariant(stripePublishKey, 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is missing');
@@ -11,6 +13,14 @@ const stripePromise = loadStripe(stripePublishKey);
 
 const CheckoutPage = () => {
 	const { items, removeItemFromCart } = useCartStore();
+
+	const { mutate, data, isLoading } = useMutation({
+		mutationFn: async (items: { slug: string; count: number }[]) => {
+			return await fetcher<{ session: Stripe.Response<Stripe.Checkout.Session> }>('api/checkout', {
+				body: items,
+			});
+		},
+	});
 
 	const cartPriceSum = items.reduce((acc, obj) => {
 		return acc + obj.item.price;
@@ -20,15 +30,14 @@ const CheckoutPage = () => {
 		const stripe = await stripePromise;
 		invariant(stripe, 'Something went wrong');
 
-		const res = await fetch('/api/checkout', {
-			method: 'POST',
-			headers: { 'Content-type': 'application/json' },
-			body: JSON.stringify(items.map((cartItem) => ({ slug: cartItem.item.id, count: cartItem.count }))),
-		});
-
-		const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } = await res.json();
-
-		stripe.redirectToCheckout({ sessionId: session.id });
+		mutate(
+			items.map((cartItem) => ({ slug: cartItem.item.id, count: cartItem.count })),
+			{
+				onSuccess: ({ session }) => {
+					stripe.redirectToCheckout({ sessionId: session.id });
+				},
+			},
+		);
 	};
 
 	return (
