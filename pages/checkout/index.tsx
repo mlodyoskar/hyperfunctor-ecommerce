@@ -111,7 +111,9 @@ const CheckoutPage = () => {
 										))}
 									</ul>
 								</div>
-								<Button onClick={handleCreateOrder}>Złóz zamówienie</Button>
+								<Button isLoading={isLoading} onClick={handleCreateOrder}>
+									Złóz zamówienie
+								</Button>
 							</div>
 						</div>
 					</div>
