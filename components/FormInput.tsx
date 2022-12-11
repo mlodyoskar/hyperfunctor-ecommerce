@@ -6,7 +6,7 @@ interface Props {
 	errorMessage?: string;
 	srOnly?: boolean;
 	placeholder?: string;
-	type?: 'text' | 'email' | 'number' | 'textarea';
+	type?: 'text' | 'email' | 'number' | 'textarea' | 'password';
 }
 
 export const FormInput = React.forwardRef<HTMLInputElement, Props>(

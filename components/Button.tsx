@@ -3,7 +3,7 @@ import LoadingSpinner from '../public/oval.svg';
 
 interface Props {
 	children: React.ReactNode;
-	onClick: () => void;
+	onClick?: () => void;
 	isLoading?: boolean;
 }
 

@@ -6,21 +6,24 @@ import { Layout } from '../components/Layout';
 import { CartStoreContextProvider } from '../context/CartContext';
 import { apolloClient } from '../graphql/client';
 import { ApolloProvider } from '@apollo/client';
+import { SessionProvider } from 'next-auth/react';
 
 export const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
-		<ApolloProvider client={apolloClient}>
-			<CartStoreContextProvider>
-				<QueryClientProvider client={queryClient}>
-					<Layout>
-						<Component {...pageProps} />
-					</Layout>
-					<ReactQueryDevtools />
-				</QueryClientProvider>
-			</CartStoreContextProvider>
-		</ApolloProvider>
+		<SessionProvider session={session}>
+			<ApolloProvider client={apolloClient}>
+				<CartStoreContextProvider>
+					<QueryClientProvider client={queryClient}>
+						<Layout>
+							<Component {...pageProps} />
+						</Layout>
+						<ReactQueryDevtools />
+					</QueryClientProvider>
+				</CartStoreContextProvider>
+			</ApolloProvider>
+		</SessionProvider>
 	);
 }
 

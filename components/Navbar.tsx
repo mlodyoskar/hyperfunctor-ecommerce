@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useCartStore } from '../context/CartContext';
 import CartIcon from './Icons/cart.svg';
 import AccountIcon from './Icons/account.svg';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { Button } from './Button';
 
 const navigationLinks = [
 	{
@@ -19,10 +21,12 @@ const navigationLinks = [
 		to: '/contact',
 	},
 ] as const;
+``;
 
 export const Navbar = () => {
 	const { pathname } = useRouter();
 	const { items } = useCartStore();
+	const { data, status } = useSession();
 
 	return (
 		<header className="border-b border-gray-100">
@@ -36,6 +40,13 @@ export const Navbar = () => {
 					<Link className="flex items-center justify-center" href="/">
 						<span className="inline-block font-bold text-red-700">Hyperfunctor</span>
 					</Link>
+				</div>
+				<div className="ml-20">
+					{status === 'authenticated' ? (
+						<Button onClick={() => signOut()}>Log out</Button>
+					) : (
+						<Button onClick={() => signIn()}>Sign in</Button>
+					)}
 				</div>
 
 				<div className="flex flex-1 items-center justify-end">
