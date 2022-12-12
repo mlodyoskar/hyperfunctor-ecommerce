@@ -29,7 +29,7 @@ export const Navbar = () => {
 	const { data, status } = useSession();
 
 	return (
-		<header className="border-b border-gray-100">
+		<header className="fixed z-50 w-full border-b border-gray-100 bg-white">
 			<div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between sm:px-6 lg:px-8">
 				<div className="flex items-center">
 					<button type="button" className="p-2 sm:mr-4 lg:hidden">
@@ -84,10 +84,10 @@ export const Navbar = () => {
 							</span>
 
 							<span>
-								<a href="/account" className="block border-b-4 border-transparent p-6 hover:border-red-700">
+								<Link href="/signup" className="block border-b-4 border-transparent p-6 hover:border-red-700">
 									<AccountIcon className="h-4 w-4" />
 									<span className="sr-only"> Account </span>
-								</a>
+								</Link>
 							</span>
 
 							<span className="hidden sm:block">

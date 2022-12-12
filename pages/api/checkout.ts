@@ -1,13 +1,19 @@
+import { authorizedApolloClient } from './../../graphql/authorizedClient';
 import {
+	CreateOrderDocument,
+	CreateOrderMutation,
+	CreateOrderMutationVariables,
 	GetProductBySlugDocument,
 	GetProductBySlugQuery,
 	GetProductBySlugQueryVariables,
+	OrderStatus,
 } from './../../generated/graphql';
 import { invariant } from '@apollo/client/utilities/globals';
 import { NextApiHandler } from 'next';
 import { Stripe } from 'stripe';
 import { z } from 'zod';
 import { apolloClient } from '../../graphql/client';
+import { ApolloError } from '@apollo/client';
 
 const BodySchema = z
 	.object({
@@ -62,6 +68,31 @@ const handler: NextApiHandler = async (req, res) => {
 		mode: 'payment',
 		locale: 'pl',
 		payment_method_types: ['card', 'p24', 'blik'],
+		shipping_address_collection: { allowed_countries: ['PL'] },
+		shipping_options: [
+			{
+				shipping_rate_data: {
+					type: 'fixed_amount',
+					fixed_amount: { amount: 798, currency: 'pln' },
+					display_name: 'Paczkomat',
+					delivery_estimate: {
+						minimum: { unit: 'business_day', value: 2 },
+						maximum: { unit: 'business_day', value: 5 },
+					},
+				},
+			},
+			{
+				shipping_rate_data: {
+					type: 'fixed_amount',
+					fixed_amount: { amount: 1498, currency: 'pln' },
+					display_name: 'DHL',
+					delivery_estimate: {
+						minimum: { unit: 'business_day', value: 2 },
+						maximum: { unit: 'business_day', value: 5 },
+					},
+				},
+			},
+		],
 		success_url: `${APP_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
 		cancel_url: `${APP_URL}/checkout/canceled`,
 		line_items: productsToBuy.map(({ product, count }) => ({
@@ -81,6 +112,28 @@ const handler: NextApiHandler = async (req, res) => {
 	if (!stripeCheckoutSession.url) {
 		res.status(500).json({ message: 'Something went wrong' });
 		return;
+	}
+	try {
+		await authorizedApolloClient.mutate<CreateOrderMutation, CreateOrderMutationVariables>({
+			mutation: CreateOrderDocument,
+			variables: {
+				orderStatus: OrderStatus.InProgress,
+				stripeCheckoutId: stripeCheckoutSession.id,
+				email: 'placeholder@test.com',
+				total: productsToBuy.reduce((acc, curr) => {
+					return acc + curr.product.price;
+				}, 0),
+				create: productsToBuy.map(({ product, count }) => ({
+					quantity: count,
+					total: product.price,
+					product: { connect: { slug: product.slug } },
+				})),
+			},
+		});
+	} catch (e) {
+		if (e instanceof ApolloError) {
+			res.status(500).json({ error: e.message });
+		}
 	}
 
 	res.status(201).json({ session: stripeCheckoutSession });

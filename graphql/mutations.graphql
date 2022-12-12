@@ -15,3 +15,32 @@ mutation CreateAccount($email: String!, $password: String!) {
 		id
 	}
 }
+
+mutation CreateOrder(
+	$orderStatus: OrderStatus!
+	$email: String!
+	$stripeCheckoutId: String!
+	$total: Int!
+	$create: [OrderItemCreateInput!]
+) {
+	createOrder(
+		data: {
+			orderStatus: $orderStatus
+			email: $email
+			total: $total
+			stripeCheckoutId: $stripeCheckoutId
+			orderItems: { create: $create }
+		}
+	) {
+		id
+		orderItems {
+			id
+		}
+	}
+}
+
+mutation updateOrderStatus($orderId: ID!, $status: OrderStatus!) {
+	updateOrder(where: { id: $orderId }, data: { orderStatus: $status }) {
+		id
+	}
+}

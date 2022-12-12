@@ -14,7 +14,7 @@ export const Layout = ({ children }: Props) => {
 				canonical="https://hyperfunctor-ecommerce.vercel.app/"
 			/>
 			<Navbar />
-			<main className="min-h-screen">{children}</main>
+			<main className="min-h-screen pt-16">{children}</main>
 			<Footer />
 		</>
 	);

@@ -23,7 +23,7 @@ const CheckoutPage = () => {
 	});
 
 	const cartPriceSum = items.reduce((acc, obj) => {
-		return acc + obj.item.price;
+		return acc + obj.item.price * obj.count;
 	}, 0);
 
 	const handleCreateOrder = async () => {
