@@ -1,4 +1,4 @@
-import { NewsletterForm } from './NewsletterForm';
+import { NewsletterForm } from './NewsletterForm/NewsletterForm';
 
 export const Footer = () => {
 	return (
