@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { fetcher } from '../../utils/fetcher';
+import { FormInput } from '../FormInput';
 import { NewsletterSuccessModal } from '../Modals/NewsletterSuccessModal';
 
 const NewsletterFormSchema = yup.object().shape({
-	email: yup.string().email().required(),
+	email: yup.string().email('Podano nieprawidłowy adres email').required('To pole jest wymagane'),
 });
 
 type NewsletterForm = yup.InferType<typeof NewsletterFormSchema>;
@@ -45,32 +46,11 @@ export const NewsletterFormView = ({ doSubmit }: NewsletterFormViewProps) => {
 			</p>
 
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className="mb-3 flex flex-col items-end gap-4 sm:flex-row sm:gap-2">
+				<div className="mb-3 flex flex-col items-center gap-4 sm:flex-row sm:gap-2">
 					<div className="relative w-full">
-						<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								strokeWidth="1.5"
-								stroke="currentColor"
-								className="h-6 w-6"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-								/>
-							</svg>
-						</div>
-						<input
-							className={`
-								block w-full rounded-lg border ${
-									!formState.errors.email ? 'border-gray-300' : 'border-2 border-red-300'
-								} bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 focus:border-red-500 focus:ring-red-500`}
-							placeholder="Twój adres mailowy..."
-							{...register('email')}
-						/>
+						<FormInput errorMessage={formState.errors.email?.message} placeholder="john@doe.com" {...register('email')}>
+							Twój email
+						</FormInput>
 					</div>
 					<div className="h-full w-full sm:w-auto">
 						<button className="h-full w-full rounded-lg bg-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 ">

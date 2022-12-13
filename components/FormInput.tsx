@@ -3,7 +3,7 @@ import React from 'react';
 
 interface Props {
 	children: React.ReactNode;
-	errorMessage?: string;
+	errorMessage?: string | undefined;
 	srOnly?: boolean;
 	placeholder?: string;
 	type?: 'text' | 'email' | 'number' | 'textarea';
