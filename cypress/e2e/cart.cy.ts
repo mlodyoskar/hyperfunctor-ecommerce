@@ -1,3 +1,5 @@
+import { CART } from '../elements/cart';
+
 export {};
 
 describe('Cart', () => {
@@ -8,5 +10,6 @@ describe('Cart', () => {
 		cy.contains('Add to cart').click();
 		cy.get('[data-testid="cart-counter"]').should('have.text', 1);
 		cy.get('[data-testid="navbar-cart"').click();
+		cy.get(CART.submitButton).click();
 	});
 });
