@@ -18,27 +18,3 @@
 		}
 	]
 }
-
-// {
-// 	// "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
-// 	"overrides": [
-// 		{
-// 			"files": ["*.ts", "*.tsx", "../cypress.config.ts"], // Your TypeScript files extension
-
-// 			// As mentioned in the comments, you should extend TypeScript plugins here,
-// 			// instead of extending them outside the `overrides`.
-// 			// If you don't want to extend any rules, you don't need an `extends` attribute.
-// 			"extends": ["next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
-
-// 			"parserOptions": {
-// 				"ecmaVersion": 2021,
-// 				"sourceType": "module",
-// 				"project": ["./tsconfig.json"] // Specify it only for TypeScript files
-// 			},
-// 			"rules": {
-// 				"no-console": "warn",
-// 				"@typescript-eslint/prefer-readonly": "error"
-// 			}
-// 		}
-// 	]
-// }
