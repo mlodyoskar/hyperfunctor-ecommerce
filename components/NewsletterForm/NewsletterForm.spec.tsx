@@ -1,4 +1,4 @@
-import { act, fireEvent, getByText, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NewsletterFormView } from './NewsletterForm';
 
 const INPUT_PLACEHOLDER = 'john@doe.com';
@@ -22,7 +22,7 @@ describe('Newsletter form', () => {
 		const button = screen.getByText(`Dołącz`);
 		fireEvent.click(button);
 
-		await waitFor(() => expect(doSubmit).not.toHaveBeenCalled());
+		expect(doSubmit).not.toHaveBeenCalled();
 	});
 
 	it('should not submit the form when button is clicked and input is filled with wrong email', async () => {
@@ -33,14 +33,14 @@ describe('Newsletter form', () => {
 		const input = screen.getByPlaceholderText(INPUT_PLACEHOLDER);
 		const button = screen.getByText(`Dołącz`);
 		act(() => {
-			fireEvent.change(input, { target: { value: 'valide@xample.com' } });
+			fireEvent.change(input, { target: { value: 'invalid_email.com' } });
 			fireEvent.click(button);
 		});
 
 		expect(doSubmit).not.toHaveBeenCalled();
 	});
 
-	it('submit the form when button is clicked and input is filled with valid email', async () => {
+	it('should submit the form when button is clicked and input is filled with valid email', async () => {
 		const doSubmit = jest.fn();
 		render(<NewsletterFormView doSubmit={doSubmit} />);
 
