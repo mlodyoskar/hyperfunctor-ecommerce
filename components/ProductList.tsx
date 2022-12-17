@@ -5,9 +5,9 @@ import { GetProductsListQuery } from '../generated/graphql';
 export const ProductList = ({ products }: { products: GetProductsListQuery['products'] }) => {
 	return (
 		<div className="grid gap-x-4 gap-y-8 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-			{products.map((product) => {
+			{products.map((product, index) => {
 				return (
-					<Link href={`/products/${product.slug}`} key={product.id} className="block">
+					<Link href={`/products/${product.slug}`} data-testid={`product-${index}`} key={product.id} className="block">
 						<div className="bg-white">
 							<Image
 								alt={product.name}

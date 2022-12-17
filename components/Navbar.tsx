@@ -43,6 +43,7 @@ export const Navbar = () => {
 						{navigationLinks.map(({ text, to }) => {
 							return (
 								<Link
+									data-testid={`navbar-link-${text}`}
 									key={text}
 									href={to}
 									className={`${clsx(
@@ -59,11 +60,15 @@ export const Navbar = () => {
 					<div className="ml-8 flex items-center">
 						<div className="flex items-center divide-x divide-gray-100 border-x border-gray-100">
 							<span>
-								<Link href="/checkout" className="relative block border-b-4 border-transparent p-6 hover:border-red-700">
+								<Link
+									data-testid="navbar-cart"
+									href="/checkout"
+									className="relative block border-b-4 border-transparent p-6 hover:border-red-700"
+								>
 									{items.length > 0 && (
 										<span className="absolute bottom-4 right-4 flex h-4 w-4 items-center justify-center rounded-full bg-red-700 text-center text-sm text-white">
 											<span className="sr-only">Items in the cart: </span>
-											{items.length}
+											<span data-testid="cart-counter">{items.length}</span>
 										</span>
 									)}
 									<CartIcon className="h-4 w-4" />
