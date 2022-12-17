@@ -6,10 +6,13 @@ jobs:
   runs-on: ubuntu-latest
   steps:
    - name: Checkout
-     uses: actions/checkout@v2
+     uses: actions/checkout@v3
    - name: Run Cypress
      uses: cypress-io/github-action@v5.0.0
+     with:
+      record: true
      env:
       CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
-      CYPRESS_SECRET: ${{ secrets.CYPRESS_SECRET }}
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CYPRESS_RETRIES: 1
