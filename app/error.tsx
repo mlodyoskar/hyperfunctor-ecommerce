@@ -1,3 +1,5 @@
+'use client';
+
 const ErrorPage = () => {
 	return (
 		<div className="grid h-screen place-content-center bg-white">
