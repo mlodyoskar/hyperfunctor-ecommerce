@@ -1,9 +1,8 @@
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useCartStore } from '../context/CartContext';
-import CartIcon from './Icons/cart.svg';
-import AccountIcon from './Icons/account.svg';
+// import CartIcon from './Icons/cart.svg';
+// import AccountIcon from './Icons/account.svg';
 
 const navigationLinks = [
 	{
@@ -21,8 +20,7 @@ const navigationLinks = [
 ] as const;
 
 export const Navbar = () => {
-	const { pathname } = useRouter();
-	const { items } = useCartStore();
+	// const { items } = useCartStore();
 
 	return (
 		<header className="border-b border-gray-100">
@@ -47,7 +45,7 @@ export const Navbar = () => {
 									key={text}
 									href={to}
 									className={`${clsx(
-										{ 'border-current text-red-700': pathname === to },
+										// { 'border-current text-red-700': pathname === to },
 										'block h-16 border-b-4 border-transparent leading-[4rem] hover:border-current hover:text-red-700',
 									)}`}
 								>
@@ -65,13 +63,13 @@ export const Navbar = () => {
 									href="/checkout"
 									className="relative block border-b-4 border-transparent p-6 hover:border-red-700"
 								>
-									{items.length > 0 && (
+									{/* {items.length > 0 && (
 										<span className="absolute bottom-4 right-4 flex h-4 w-4 items-center justify-center rounded-full bg-red-700 text-center text-sm text-white">
 											<span className="sr-only">Items in the cart: </span>
 											<span data-testid="cart-counter">{items.length}</span>
 										</span>
-									)}
-									<CartIcon className="h-4 w-4" />
+									)} */}
+									{/* <CartIcon className="h-4 w-4" /> */}
 
 									<span className="sr-only">Cart</span>
 								</Link>
@@ -79,7 +77,7 @@ export const Navbar = () => {
 
 							<span>
 								<a href="/account" className="block border-b-4 border-transparent p-6 hover:border-red-700">
-									<AccountIcon className="h-4 w-4" />
+									{/* <AccountIcon className="h-4 w-4" /> */}
 									<span className="sr-only"> Account </span>
 								</a>
 							</span>

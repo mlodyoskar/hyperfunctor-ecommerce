@@ -16,8 +16,8 @@ interface Props {
 }
 
 export const Product = ({ product }: Props) => {
-	const { addItemToCart } = useCartStore();
-	const [reviewModalOpen, setReviewModalOpen] = useState(false);
+	// const { addItemToCart } = useCartStore();
+	// const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
 	if (!product) {
 		return <h1>Nie znalazłem produktu</h1>;
@@ -133,42 +133,42 @@ export const Product = ({ product }: Props) => {
 							<p className="text-xl font-bold">${product.price / 100}</p>
 						</div>
 
-						<button
+						{/* <button
 							onClick={(e) => {
 								e.preventDefault();
-								addItemToCart({
-									id: product.slug,
-									price: product.price,
-									title: product.name,
-									images: product.images.map((img) => img.url),
-								});
+								// addItemToCart({
+								// 	id: product.slug,
+								// 	price: product.price,
+								// 	title: product.name,
+								// 	images: product.images.map((img) => img.url),
+								// });
 							}}
 							className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
-						>
-							Add to cart
-						</button>
+						> */}
+						{/* Add to cart
+						</button> */}
 
 						{product.reviews.length > 0 && (
 							<button
 								type="button"
 								className="w-full rounded border border-gray-300 bg-gray-100 px-6 py-3 text-sm font-bold uppercase tracking-wide"
-								onClick={() => setReviewModalOpen(true)}
+								// onClick={() => setReviewModalOpen(true)}
 							>
 								Przeczytaj opinie
 							</button>
 						)}
 
-						<ReviewModal reviews={product.reviews} open={reviewModalOpen} setOpen={setReviewModalOpen} />
+						{/* <ReviewModal reviews={product.reviews} open={reviewModalOpen} setOpen={setReviewModalOpen} /> */}
 					</form>
 				</div>
 
 				<div className="lg:col-span-3">
 					<div className="prose max-w-none [&>iframe]:mt-6 [&>iframe]:aspect-video [&>iframe]:w-full [&>iframe]:rounded-xl">
-						<Markdown content={product.description} />
+						{/* <Markdown content={product.description} /> */}
 					</div>
 				</div>
 			</div>
-			<ProductReview productSlug={product.slug} />
+			{/* <ProductReview productSlug={product.slug} /> */}
 		</div>
 	);
 };
